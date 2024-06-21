@@ -2,6 +2,7 @@
 library(tidyverse)
 library(ggcorrplot)
 library(ordinal)
+library(markovchain)
 
 # Read in the CSV files
 df_2015 <- read_csv("2015.csv")
@@ -77,3 +78,13 @@ model <- clm(happiness_rating ~ economy + health + family + freedom + generosity
               data = world_happiness)
 # Summary of the model
 summary(model)
+
+# Generate predicted probabilities for each level of happiness
+probabilities <- predict(model, type = "prob")
+
+# Combine the predicted probabilities with the year variable
+data <- cbind(world_happiness, probabilities)
+
+# Fit the Markov model
+mc <- normalize(as.matrix(data[, c("year", "prob1", "prob2", "prob3", "prob4")]))
+markov_model <- new("markovchain", transitionMatrix = mc, states = colnames(mc))
