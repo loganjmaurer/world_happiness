@@ -88,3 +88,48 @@ data <- cbind(world_happiness, probabilities)
 # Fit the Markov model
 mc <- normalize(as.matrix(data[, c("year", "prob1", "prob2", "prob3", "prob4")]))
 markov_model <- new("markovchain", transitionMatrix = mc, states = colnames(mc))
+
+# Load required libraries
+library(markovchain)
+library(tidyverse)
+
+# Extract the transition matrix from the Markov chain model
+P <- as.matrix(markov_model@transitionMatrix)
+
+# Create a function to apply the Markov chain to each country
+project_happiness <- function(data, years) {
+  # Get the initial probabilities for each country
+  initial_probs <- data[1, c("prob1", "prob2", "prob3", "prob4")]
+  
+  # Apply the Markov chain to project happiness over time
+  probs <- t(vapply(years, function(y) {
+    initial_probs %*% matrix(P, nrow = 4, ncol = 4, byrow = TRUE)^y
+  }, numeric(4)))
+  
+  # Combine the projected probabilities with the country and year
+  projected_happiness <- data.frame(
+    country = data$country[1],
+    year = years,
+    prob1 = probs[, 1],
+    prob2 = probs[, 2],
+    prob3 = probs[, 3],
+    prob4 = probs[, 4]
+  )
+  
+  return(projected_happiness)
+}
+
+# Apply the function to each country and combine the results
+projected_happiness <- world_happiness %>%
+  group_by(country) %>%
+  do(project_happiness(., 1:10))
+
+# Create the visualization
+ggplot(projected_happiness, aes(x = year)) +
+  geom_area(aes(y = prob1, fill = "Happiness Level 1")) +
+  geom_area(aes(y = prob2, fill = "Happiness Level 2")) +
+  geom_area(aes(y = prob3, fill = "Happiness Level 3")) +
+  geom_area(aes(y = prob4, fill = "Happiness Level 4")) +
+  facet_wrap(~country, ncol = 4) +
+  scale_fill_manual(values = c("#4B0082", "#8B008B", "#9370DB", "#E6E6FA")) +
+  labs(title = "Projected Happiness Levels Over Time", x = "Year", y = "Probability", fill = "Happiness Level")
