@@ -19,3 +19,16 @@ world_happiness <- bind_rows(
 
 # Preview the merged data set
 head(world_happiness)
+
+# Discretize the happiness variable
+world_happiness <- world_happiness %>%
+  mutate(happiness_ordinal = case_when(
+    happiness < 3 ~ 1,
+    happiness >= 3 & happiness < 5 ~ 2, 
+    happiness >= 5 & happiness < 7 ~ 3,
+    happiness >= 7 & happiness < 9 ~ 4,
+    happiness >= 9 ~ 5
+  ))
+
+# Preview the updated data frame
+head(world_happiness)
