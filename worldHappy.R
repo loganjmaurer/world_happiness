@@ -1,5 +1,6 @@
 # Load required libraries
 library(tidyverse)
+library(ggcorrplot)
 
 # Read in the CSV files
 df_2015 <- read_csv("2015.csv")
@@ -59,3 +60,14 @@ ggplot(world_happiness, aes(x = happiness_ordinal, y = generosity, color = as.fa
 ggplot(world_happiness, aes(x = happiness_ordinal, y = trust, color = as.factor(happiness_ordinal))) +
   geom_point() +
   labs(title = "Happiness vs Trust", color = "Happiness Score")
+
+# Calculate the correlation matrix
+cor_matrix <- cor(world_happiness[, c("economy", "health", "family", "freedom", "generosity", "trust")])
+
+# Create the correlation matrix plot
+ggcorrplot(cor_matrix,
+           hc.order = TRUE,
+           type = "lower",
+           outline.col = "white",
+           ggtheme = ggplot2::theme_gray(),
+           lab = TRUE)
