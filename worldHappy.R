@@ -1,6 +1,7 @@
 # Load required libraries
 library(tidyverse)
 library(ggcorrplot)
+library(ordinal)
 
 # Read in the CSV files
 df_2015 <- read_csv("2015.csv")
@@ -71,3 +72,8 @@ ggcorrplot(cor_matrix,
            outline.col = "white",
            ggtheme = ggplot2::theme_gray(),
            lab = TRUE)
+# Fit the ordinal logistic regression model
+model <- clm(happiness_rating ~ economy + health + family + freedom + generosity + trust, 
+              data = world_happiness)
+# Summary of the model
+summary(model)
