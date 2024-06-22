@@ -143,3 +143,11 @@ model <- polr(as.factor(happiness_ordinal) ~ economy + health + family + freedom
              data = world_happiness)
 # Summary of the model
 summary(model)
+
+#Get predicted probabilities
+probs <- predict(model, newdata = world_happiness, type = "probs")
+world_happiness <- cbind(world_happiness, 
+                                    data.frame(prob_1 = probs[, 1], 
+                                               prob_2 = probs[, 2], 
+                                               prob_3 = probs[, 3], 
+                                               prob_4 = probs[, 4]))
