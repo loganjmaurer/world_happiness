@@ -111,7 +111,7 @@ probabilities <- predict(model, type = "prob")
 data <- cbind(world_happiness, probabilities)
 
 # Fit the Markov model
-mc <- normalize(as.matrix(data[, c("year", "prob1", "prob2", "prob3", "prob4")]))
+mc <- normalize(as.matrix(data[, c("year", "prob1", "prob2", "prob3", "prob4", "prob5")]))
 markov_model <- new("markovchain", transitionMatrix = mc, states = colnames(mc))
 
 # Extract the transition matrix from the Markov chain model
@@ -120,11 +120,11 @@ P <- as.matrix(markov_model@transitionMatrix)
 # Create a function to apply the Markov chain to each country
 project_happiness <- function(data, years) {
   # Get the initial probabilities for each country
-  initial_probs <- data[1, c("prob1", "prob2", "prob3", "prob4")]
+  initial_probs <- data[1, c("prob1", "prob2", "prob3", "prob4", "prob5")]
   
   # Apply the Markov chain to project happiness over time
   probs <- t(vapply(years, function(y) {
-    initial_probs %*% matrix(P, nrow = 4, ncol = 4, byrow = TRUE)^y
+    initial_probs %*% matrix(P, nrow = 5, ncol = 5, byrow = TRUE)^y
   }, numeric(4)))
   
   # Combine the projected probabilities with the country and year
@@ -134,7 +134,8 @@ project_happiness <- function(data, years) {
     prob1 = probs[, 1],
     prob2 = probs[, 2],
     prob3 = probs[, 3],
-    prob4 = probs[, 4]
+    prob4 = probs[, 4],
+    prob5 = probs[, 5]
   )
   
   return(projected_happiness)
@@ -151,6 +152,7 @@ ggplot(projected_happiness, aes(x = year)) +
   geom_area(aes(y = prob2, fill = "Happiness Level 2")) +
   geom_area(aes(y = prob3, fill = "Happiness Level 3")) +
   geom_area(aes(y = prob4, fill = "Happiness Level 4")) +
+  geom_area(aes(y = prob5, fill = "Happiness Level 5")) +
   facet_wrap(~country, ncol = 4) +
   scale_fill_manual(values = c("#4B0082", "#8B008B", "#9370DB", "#E6E6FA")) +
   labs(title = "Projected Happiness Levels Over Time", x = "Year", y = "Probability", fill = "Happiness Level")
