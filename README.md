@@ -1,6 +1,10 @@
 # world_happiness
 An Analysis of the Happiness Rankings by the Gallop World Poll
+
+
 https://www.kaggle.com/datasets/unsdsn/world-happiness
+
+
 Which country has the happiest people, and what factors influence this?
 This data set has survey, economic and health data for most countries in the workld. All of this is available for the years 2015 to 2019.
 It uses results from a Gallup Poll that asked people in each country to rate their happiness.
