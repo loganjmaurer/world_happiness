@@ -2,6 +2,7 @@
 library(tidyverse)
 library(ggcorrplot)
 library(MASS)
+library(markovchain)
 
 # Read in the CSV files
 df_2015 <- read_csv("2015.csv")
@@ -96,29 +97,37 @@ world_happiness <- world_happiness %>%
 head(world_happiness)
 
 # Create the six scatter plots with color-coding
-ggplot(world_happiness, aes(x = happiness_ordinal, y = economy, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Economy", color = "Happiness Score")
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = economy, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "Economy", fill = "Happiness")
 
-ggplot(world_happiness, aes(x = happiness_ordinal, y = health, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Health", color = "Happiness Score")
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = health, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "Health", fill = "Happiness")
 
-ggplot(world_happiness, aes(x = happiness_ordinal, y = family, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Family", color = "Happiness Score")
 
-ggplot(world_happiness, aes(x = happiness_ordinal, y = freedom, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Freedom", color = "Happiness Score")
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = family, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "Family", fill = "Happiness")
 
-ggplot(world_happiness, aes(x = happiness_ordinal, y = generosity, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Generosity", color = "Happiness Score")
 
-ggplot(world_happiness, aes(x = happiness_ordinal, y = trust, color = as.factor(happiness_ordinal))) +
-  geom_point() +
-  labs(title = "Happiness vs Trust", color = "Happiness Score")
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = freedom, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "freedom", fill = "Happiness")
+
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = generosity, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "Generosity", fill = "Happiness")
+
+ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = trust, fill = as.factor(happiness_ordinal))) +
+  geom_violin(position = "dodge") +
+  scale_fill_brewer(palette = "Paired") +
+  labs(x = "Happiness", y = "Trust", fill = "Happiness")
 
 # Calculate the correlation matrix
 cor_matrix <- cor(world_happiness[, c("economy", "health", "family", "freedom", "generosity", "trust")])
