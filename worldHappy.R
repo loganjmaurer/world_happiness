@@ -99,7 +99,7 @@ ggcorrplot(cor_matrix,
            ggtheme = ggplot2::theme_gray(),
            lab = TRUE)
 # Fit the ordinal logistic regression model
-model <- clm(happiness_rating ~ economy + health + family + freedom + generosity + trust, 
+model <- clm(happiness_ordianal ~ economy + health + family + freedom + generosity + trust, 
               data = world_happiness)
 # Summary of the model
 summary(model)
@@ -113,10 +113,6 @@ data <- cbind(world_happiness, probabilities)
 # Fit the Markov model
 mc <- normalize(as.matrix(data[, c("year", "prob1", "prob2", "prob3", "prob4")]))
 markov_model <- new("markovchain", transitionMatrix = mc, states = colnames(mc))
-
-# Load required libraries
-library(markovchain)
-library(tidyverse)
 
 # Extract the transition matrix from the Markov chain model
 P <- as.matrix(markov_model@transitionMatrix)
