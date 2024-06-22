@@ -154,5 +154,5 @@ ggplot(projected_happiness, aes(x = year)) +
   geom_area(aes(y = prob4, fill = "Happiness Level 4")) +
   geom_area(aes(y = prob5, fill = "Happiness Level 5")) +
   facet_wrap(~country, ncol = 4) +
-  scale_fill_manual(values = c("#4B0082", "#8B008B", "#9370DB", "#E6E6FA", "#FF69B4")) +
+  scale_fill_manual(values = c("#0072B2", "#8B008B", "#C9A0DC", "#E066FF", "#FF0000")) +
   labs(title = "Projected Happiness Levels Over Time", x = "Year", y = "Probability", fill = "Happiness Level")
