@@ -151,3 +151,7 @@ world_happiness <- cbind(world_happiness,
                                                prob_2 = probs[, 2], 
                                                prob_3 = probs[, 3], 
                                                prob_4 = probs[, 4]))
+#Without Discretization
+model1 <- lm(happiness ~ trust + economy + health + freedom + family + generosity, data = world_happiness)
+world_happiness$predicted_happiness <- predict(model1)
+summary(model1)
