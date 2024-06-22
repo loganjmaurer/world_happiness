@@ -11,7 +11,32 @@ df_2017 <- read_csv("2017.csv")
 df_2018 <- read_csv("2018.csv")
 df_2019 <- read_csv("2019.csv")
 
-#there are six predictors: economy, health, family, freedom, generosity and trust. Some need to be renamed so that they are common across all data sets before they can be merged.
+# Subset and rename the variables for each yearly data frame
+df_2015 <- df_2015 %>%
+  select(country, happiness_score, economy, health, family, freedom, generosity, trust) %>%
+  rename(happiness_score = happiness)
+
+df_2016 <- df_2016 %>%
+  select(country, happiness.score, economy_gdp_per_capita, health_life_expectancy, family, freedom, generosity, trust) %>%
+  rename(happiness = Happiness.Score, 
+         economy = economy_gdp_per_capita,
+         health = health_life_expectancy)
+
+df_2017 <- df_2017 %>%
+  select(country, happiness_score, economy_gdp_per_capita, health_life_expectancy, family, freedom, generosity, trust) %>%
+  rename(happiness = score,
+         economy = economy_gdp_per_capita,
+         health = health_life_expectancy)
+
+df_2018 <- df_2018 %>%
+  select(country, happiness_score, economy_gdp_per_capita, health_life_expectancy, family, freedom, generosity, trust) %>%
+  rename(economy = economy_gdp_per_capita,
+         health = health_life_expectancy)
+
+df_2019 <- df_2019 %>%
+  select(country, happiness_score, economy_gdp_per_capita, health_life_expectancy, family, freedom, generosity, trust) %>%
+  rename(economy = economy_gdp_per_capita,
+         health = health_life_expectancy)
 
 # Combine the data frames into a single data set
 world_happiness <- bind_rows(
