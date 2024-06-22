@@ -129,7 +129,7 @@ ggplot(world_happiness, aes(x = as.factor(happiness_ordinal), y = trust, fill = 
   labs(x = "Happiness", y = "Trust", fill = "Happiness")
 
 # Calculate the correlation matrix
-cor_matrix <- cor(world_happiness[, c("economy", "health", "family", "freedom", "generosity", "trust")])
+cor_matrix <- cor(world_happiness[, c("economy", "health", "family", "freedom", "generosity", "trust", "happiness")])
 
 # Create the correlation matrix plot
 ggcorrplot(cor_matrix,
@@ -151,6 +151,7 @@ world_happiness <- cbind(world_happiness,
                                                prob_2 = probs[, 2], 
                                                prob_3 = probs[, 3], 
                                                prob_4 = probs[, 4]))
+world_happiness$predicted_happiness_ordinal <- probs <- predict(model, newdata = world_happiness)
 #Without Discretization
 model1 <- lm(happiness ~ trust + economy + health + freedom + family + generosity, data = world_happiness)
 world_happiness$predicted_happiness <- predict(model1)
