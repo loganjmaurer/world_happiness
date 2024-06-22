@@ -2,7 +2,6 @@
 library(tidyverse)
 library(ggcorrplot)
 library(MASS)
-library(markovchain)
 
 # Read in the CSV files
 df_2015 <- read_csv("2015.csv")
